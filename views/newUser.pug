@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+      title Create User
+  body
+      h1 Create New User
+      form(action="/users", method="POST")
+          div
+              label(for="name") Name:
+              input(type="text", id="name", name="name", required=true)
+          div
+              label(for="email") Email:
+              input(type="email", id="email", name="email", required=true)
+          div
+              button(type="submit") Submit

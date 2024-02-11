@@ -1,19 +1,20 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
+const connectDB = require('./mongooseConnection');
+const userRoutes = require('./routes/userRoutes');
+
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/lms', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB...'))
-    .catch(err => console.error('Could not connect to MongoDB...', err));
+connectDB();
+
+app.set('view engine', 'pug');
+app.set('views', './views');
 
 app.use(express.json());
-app.use(cookieParser());
-app.set('views engine', 'pug');
-app.set('views', './views'); // Directory where Pug templates are located
+app.use(express.urlencoded({ extended: true }));
+app.use('/users', userRoutes);
 
-// Define routes here...
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
