@@ -78,6 +78,7 @@ const getUsers = async (req, res) => {
   try {
     const users = await User.find({});
     res.send(users);
+    //res.render('users', { users });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -112,6 +113,8 @@ const getLeaderboard = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
 module.exports = {
   registerUser,
   loginUser,

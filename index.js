@@ -15,6 +15,7 @@ const forumRoutes = require("./routes/forum.routes");
 const progressRoutes = require("./routes/progress.routes");
 const badgeRoutes = require("./routes/badge.routes");
 const { join } = require("path");
+const userController = require("./controllers/user.controller");
 
 
 app.use(cookieParser());
@@ -69,7 +70,6 @@ app.get('/logout', (req, res) => {
     res.clearCookie('authToken'); // Clear the token cookie
     res.redirect('/'); // Redirect to home page or login page
 });
-
 
 
 app.use(async (req, res, next) => {
@@ -167,6 +167,32 @@ app.get('/profile', async (req, res) => {
     }
 });
 
+app.get("/users", async (req, res) => {
+    const token = req.cookies['authToken'];
+    if (!token) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/api/auth/users', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            const users = await response.json();
+            res.render('users', { users }); // Pass the users to the Pug template
+        } else {
+            console.log('Failed to fetch users.');
+            res.redirect('/'); // Or handle this scenario appropriately
+        }
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.redirect('/');
+    }
+});
 
 app.use("/api/auth", userRoutes);
 app.use("/api/courses", courseRoutes);

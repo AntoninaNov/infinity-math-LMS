@@ -5,12 +5,15 @@ const { authorize } = require("../utils/role");
 
 const router = new express.Router();
 
+// hw5 task
 router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
 router.get("/me", auth, userController.getProfile);
 router.patch("/me", auth, userController.updateProfile);
 router.delete("/me", auth, userController.deleteProfile);
-router.get("/users", auth, authorize("admin"), userController.getUsers);
+//router.get("/users", auth, authorize("admin"), userController.getUsers);
+router.get("/users", userController.getUsers);
+
 router.get(
   "/instructors/:id/courses",
   auth,
