@@ -194,6 +194,8 @@ app.get("/users", async (req, res) => {
     }
 });
 
+
+
 app.use("/api/auth", userRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api", quizRoutes);

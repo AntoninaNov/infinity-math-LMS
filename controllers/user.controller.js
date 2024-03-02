@@ -83,6 +83,20 @@ const getUsers = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password -tokens"); // Exclude sensitive information
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+    res.send(user);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
+
 const getInstructorCourses = async (req, res) => {
   const instructorId = req.params.id;
 
@@ -122,6 +136,7 @@ module.exports = {
   updateProfile,
   deleteProfile,
   getUsers,
+  getUserById,
   getInstructorCourses,
   getLeaderboard,
 };
