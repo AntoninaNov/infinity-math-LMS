@@ -2,9 +2,9 @@ const express = require("express");
 const app = express()
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const cors = require("cors");
 const fetch = require("node-fetch");
 const cookieParser = require('cookie-parser');
+const corsMiddleware = require('./middlewares/cors');
 require("./config/db.config");
 dotenv.config();
 
@@ -20,7 +20,7 @@ const attendanceRoutes = require('./routes/attendance.routes');
 
 
 app.use(cookieParser());
-app.use(cors());
+app.use(corsMiddleware);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
