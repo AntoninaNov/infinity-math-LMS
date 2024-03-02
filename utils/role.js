@@ -2,6 +2,7 @@ const ROLE = {
   ADMIN: "admin",
   INSTRUCTOR: "instructor",
   STUDENT: "student",
+  PARENT: "parent",
 };
 
 const authorize = (...roles) => {

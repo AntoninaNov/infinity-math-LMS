@@ -11,11 +11,12 @@ dotenv.config();
 const userRoutes = require("./routes/user.routes");
 const courseRoutes = require("./routes/course.routes");
 const quizRoutes = require("./routes/quiz.routes");
-const forumRoutes = require("./routes/forum.routes");
 const progressRoutes = require("./routes/progress.routes");
 const badgeRoutes = require("./routes/badge.routes");
 const { join } = require("path");
 const userController = require("./controllers/user.controller");
+const feedbackRoutes = require('./routes/feedback.routes');
+const attendanceRoutes = require('./routes/attendance.routes');
 
 
 app.use(cookieParser());
@@ -194,15 +195,13 @@ app.get("/users", async (req, res) => {
     }
 });
 
-
-
 app.use("/api/auth", userRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api", quizRoutes);
-app.use("/api/courses/:courseId/forums", forumRoutes);
 app.use("/api", progressRoutes);
 app.use("/api/badges", badgeRoutes);
-
+app.use('/api', feedbackRoutes);
+app.use(attendanceRoutes);
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });
