@@ -5,6 +5,8 @@ const dotenv = require("dotenv");
 const fetch = require("node-fetch");
 const cookieParser = require('cookie-parser');
 const corsMiddleware = require('./middlewares/cors');
+const cookieRoutes = require('./routes/cookie.routes');
+const headerRoutes = require('./routes/header.routes');
 require("./config/db.config");
 dotenv.config();
 
@@ -22,10 +24,14 @@ const attendanceRoutes = require('./routes/attendance.routes');
 app.use(cookieParser());
 app.use(corsMiddleware);
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/cookie', cookieRoutes);
+app.use('/header', headerRoutes);
 
 app.set('view engine', 'pug');
 app.set('views', join(__dirname, 'views'));
+
 
 app.use(express.static(join(__dirname, 'public')));
 
