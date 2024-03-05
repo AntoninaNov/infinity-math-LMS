@@ -1,0 +1,14 @@
+extends ../common/layout.pug
+
+block content
+    .container.mx-auto.py-8
+        h1.text-4xl.font-bold.mb-8 Edit Course
+        form(method="POST" action="/instructor/api/courses/#{course.id}/update" class="max-w-lg mx-auto")
+            .mb-4
+                label(for="name" class="block text-gray-700 text-sm font-bold mb-2") Course Name
+                input#name(type="text" name="name" value=course.name class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required)
+            .mb-4
+                label(for="description" class="block text-gray-700 text-sm font-bold mb-2") Description
+                textarea#description(name="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required)= course.description
+            button(type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline") Update Course
+            a(href=`/instructor/api/courses/#{course.id}/delete` method="post" class="ml-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline") Delete Course

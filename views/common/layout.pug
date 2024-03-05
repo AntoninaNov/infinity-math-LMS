@@ -14,6 +14,10 @@ html(lang="en")
                     a(href="/" class="px-4 py-2 hover:underline") Home
                     if user
                         a(href="/profile" class="px-4 py-2 hover:underline") Profile
+                        if user.role === 'instructor'
+                            a(href="/instructor/courses" class="px-4 py-2 hover:underline") Courses
+                        else if user.role === 'student'
+                            a(href="/courses" class="px-4 py-2 hover:underline") Courses
                         a(href="/logout" class="px-4 py-2 hover:underline") Logout
                     else
                         a(href="/login" class="px-4 py-2 hover:underline") Login

@@ -1,0 +1,9 @@
+extends ../common/layout.pug
+
+block content
+    h1.text-2xl.font-bold.mb-4 Course Progress: #{course.title}
+    ul.list-disc.pl-5
+        each lesson in course.lessons
+            li.mb-2 #{lesson.title} - #{lesson.completed ? 'Completed' : 'Incomplete'}
+    form(method="POST", action=`/api/courses/${course.id}/progress/${lessonId}`)
+        button.bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-2.px-4.rounded(type="submit") Mark as Completed
