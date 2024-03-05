@@ -1,0 +1,8 @@
+extends ../common/layout
+
+block content
+    div(class="mt-8")
+        h1(class="text-3xl font-bold text-center text-green-500") Enrollment Successful!
+        p(class="mt-4 text-center") You have successfully enrolled in #{course.title}.
+        div(class="mt-8 text-center")
+            a(href="/courses", class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded") Back to Courses

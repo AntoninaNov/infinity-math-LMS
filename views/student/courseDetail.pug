@@ -1,0 +1,10 @@
+extends ../common/layout.pug
+
+block content
+    h1.text-2xl.font-bold.mb-4 #{course.title}
+    img.mb-4(src=course.thumbnail, alt=`Image of ${course.title}`)
+    p.mb-4 #{course.description}
+    p.font-bold Enrollment Status: #{course.enrolled ? 'Enrolled' : 'Not Enrolled'}
+    if !course.enrolled
+        form(method="POST", action=`/api/courses/${course.id}/enroll`)
+            button(type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded") Enroll

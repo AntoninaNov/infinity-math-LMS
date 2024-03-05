@@ -5,7 +5,6 @@ const { authorize } = require("../utils/role");
 
 const router = new express.Router();
 
-// hw5 task
 router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
 router.get("/me", auth, userController.getProfile);

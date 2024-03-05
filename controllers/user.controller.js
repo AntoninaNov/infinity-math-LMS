@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const Course = require("../models/course.model");
 const dotenv = require("dotenv");
+const io = require('../socket').getIO();
 
 dotenv.config();
 
@@ -16,7 +17,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// Log in an existing user
 const loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -30,7 +30,14 @@ const loginUser = async (req, res) => {
       throw new Error("Invalid email or password");
     }
 
+    // Update lastLogin before generating the token
+    user.lastLogin = new Date();
+    await user.save();
+
     const token = await user.generateAuthToken();
+
+    io.emit('userLogin', { message: `Welcome back, ${user.name}!`, lastLogin: user.lastLogin });
+
     res.send({ user, token });
   } catch (error) {
     res.status(400).send({ error: error.message });

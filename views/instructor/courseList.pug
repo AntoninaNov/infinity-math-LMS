@@ -1,0 +1,13 @@
+extends ../common/layout.pug
+
+block content
+    .container.mx-auto.py-8
+        h1.text-4xl.font-bold.mb-8 Courses List
+        a(href="/instructor/add-course" class="inline-block bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mb-4") Add New Course
+        div
+            each course in courses
+                div.mb-4.p-4.shadow.rounded-lg
+                    h2.text-2xl.font-semibold #{course.name}
+                    p.text-gray-600 #{course.description}
+                    a(href=`/instructor/courses/${course.id}/edit` class="text-blue-500 hover:text-blue-700") Edit
+                    a(href=`/instructor/courses/${course.id}/materials` class="ml-4 text-blue-500 hover:text-blue-700") Add Materials

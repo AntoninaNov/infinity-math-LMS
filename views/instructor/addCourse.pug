@@ -1,0 +1,13 @@
+extends ../common/layout.pug
+
+block content
+    .container.mx-auto.py-8
+        h1.text-4xl.font-bold.mb-8 Add New Course
+        form(method="POST" action="/instructor/api/courses" class="max-w-lg mx-auto")
+            .mb-4
+                label(for="name" class="block text-gray-700 text-sm font-bold mb-2") Course Name
+                input#name(type="text" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required)
+            .mb-4
+                label(for="description" class="block text-gray-700 text-sm font-bold mb-2") Description
+                textarea#description(name="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required)
+            button(type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline") Create Course

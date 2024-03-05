@@ -1,5 +1,7 @@
 const Course = require("../models/course.model");
 const Lesson = require("../models/lesson.model");
+const logger = require('../config/logger.config');
+const {setAsync, getAsync} = require("../config/redis.config");
 
 // Create Course
 const createCourse = async (req, res) => {
@@ -13,32 +15,55 @@ const createCourse = async (req, res) => {
   }
 };
 
-// Get all courses
+// Get all courses with caching
 const getCourses = async (req, res) => {
+  const cacheKey = 'coursesList'; // Unique key for caching
   try {
+    const cachedCourses = await getAsync(cacheKey);
+    if (cachedCourses) {
+      logger.info('Serving courses list from cache');
+      return res.status(200).send(JSON.parse(cachedCourses));
+    }
+
     const courses = await Course.find({});
+    await setAsync(cacheKey, JSON.stringify(courses), 'EX', 600);
+    logger.info('Serving courses list from database and caching result');
     res.status(200).send(courses);
   } catch (error) {
+    logger.error(`Error fetching courses: ${error}`);
     res.status(500).send(error);
   }
 };
 
-// Get course by ID
+
+// Get course by ID with caching
 const getCourseById = async (req, res) => {
   const _id = req.params.id;
+  const cacheKey = `course_${_id}`; // Unique key for caching
 
   try {
-    const course = await Course.findOne({ _id });
+    const cachedCourse = await getAsync(cacheKey);
+    if (cachedCourse) {
+      let logger;
+      logger.info(`Serving course ${_id} from cache`);
+      return res.status(200).send(JSON.parse(cachedCourse));
+    }
 
+    const course = await Course.findOne({ _id });
     if (!course) {
       return res.status(404).send({ error: "Course not found." });
     }
 
+    await setAsync(cacheKey, JSON.stringify(course), 'EX', 600);
+    logger.info(`Serving course ${_id} from database and caching result`);
     res.status(200).send(course);
   } catch (error) {
+    logger.error(`Error fetching course by ID (${_id}): ${error}`);
     res.status(500).send(error);
   }
 };
+
+
 
 // Update course
 const updateCourse = async (req, res) => {
@@ -144,7 +169,7 @@ const createLesson = async (req, res) => {
   const { title, content } = req.body;
 
   try {
-    const course = await Course.findById(courseId);
+    const course = await Course.findOne({ _id }).populate('createdBy');
     if (!course) {
       return res.status(404).json({ error: "Course not found" });
     }
@@ -196,7 +221,7 @@ const updateLesson = async (req, res) => {
   const { title, content } = req.body;
 
   try {
-    const course = await Course.findById(courseId);
+    const course = await Course.findOne({ _id }).populate('createdBy');
     if (!course) {
       return res.status(404).json({ error: "Course not found" });
     }
@@ -225,7 +250,7 @@ const deleteLesson = async (req, res) => {
   const { courseId, lessonId } = req.params;
 
   try {
-    const course = await Course.findById(courseId);
+    const course = await Course.findOne({ _id }).populate('createdBy');
     if (!course) {
       return res.status(404).json({ error: "Course not found" });
     }
@@ -252,10 +277,18 @@ const deleteLesson = async (req, res) => {
   }
 };
 
+// Get course lessons with caching
 const getCourseLessons = async (req, res) => {
   const { courseId } = req.params;
+  const cacheKey = `courseLessons_${courseId}`; // Unique key for caching
 
   try {
+    const cachedLessons = await getAsync(cacheKey);
+    if (cachedLessons) {
+      logger.info(`Serving lessons for course ${courseId} from cache`);
+      return res.status(200).json(JSON.parse(cachedLessons));
+    }
+
     const course = await Course.findById(courseId).populate("lessons");
     if (!course) {
       return res.status(404).json({ error: "Course not found" });
@@ -269,11 +302,15 @@ const getCourseLessons = async (req, res) => {
       lessons: course.lessons,
     };
 
+    await setAsync(cacheKey, JSON.stringify(courseWithLessons), 'EX', 600);
+    logger.info(`Serving lessons for course ${courseId} from database and caching result`);
     res.status(200).json(courseWithLessons);
   } catch (error) {
+    logger.error(`Error fetching lessons for course ${courseId}: ${error}`);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 module.exports = {
   createCourse,
