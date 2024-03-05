@@ -8,8 +8,6 @@ const corsMiddleware = require('./middlewares/cors');
 const upload = require('./middlewares/multerConfig');
 const cookieRoutes = require('./routes/cookie.routes');
 const headerRoutes = require('./routes/header.routes');
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
 const morgan = require('morgan');
 const logger = require('./config/logger.config');
 const httpLogger = require('./middlewares/logger');
@@ -17,21 +15,17 @@ const client = require('prom-client');
 const register = new client.Registry();
 client.collectDefaultMetrics({ register });
 
+const http = require('http');
+const socket = require('./socket'); // Adjust the path as necessary
+const server = http.createServer(app);
+
+// Initialize Socket.IO
+socket.init(server);
+
 app.get('/metrics', async (req, res) => {
     res.set('Content-Type', register.contentType);
     res.end(await register.metrics());
 });
-
-io.on('connection', (socket) => {
-    logger.info('A user connected via socket');
-    socket.emit('greeting', 'Welcome! You are successfully logged in.');
-
-    socket.on('disconnect', () => {
-        logger.info('User disconnected');
-    });
-});
-
-
 
 require("./config/db.config");
 dotenv.config();
@@ -48,6 +42,7 @@ const feedbackRoutes = require('./routes/feedback.routes');
 const attendanceRoutes = require('./routes/attendance.routes');
 const {enrollInCourse, uploadCourseMaterial, deleteCourse, createCourse, updateCourse} = require("./controllers/course.controller");
 const {getProgressByCourse} = require("./controllers/progress.controller");
+const {createServer} = require("http");
 
 
 app.use(cookieParser());
@@ -297,8 +292,6 @@ app.post('/instructor/api/courses/:id/materials', upload.single('material'), asy
     }
 });
 
-
-
 app.use("/api/auth", userRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api", quizRoutes);
@@ -306,6 +299,6 @@ app.use("/api", progressRoutes);
 app.use("/api/badges", badgeRoutes);
 app.use('/api', feedbackRoutes);
 app.use(attendanceRoutes);
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });
