@@ -82,3 +82,34 @@
 {"level":"http","message":"HTTP request","timestamp":"2024-03-05 12:14:17"}
 {"level":"info","message":"Mongoose connected to the database","timestamp":"2024-03-05 12:14:18"}
 {"level":"info","message":"Mongoose successfully connected to the database","timestamp":"2024-03-05 12:14:18"}
+{"level":"info","message":"This is an informational message","timestamp":"2024-03-05 13:13:26"}
+{"level":"warn","message":"Warning issued","timestamp":"2024-03-05 13:13:26"}
+{"level":"error","message":"Error message","timestamp":"2024-03-05 13:13:26"}
+{"level":"debug","message":"Debugging message","timestamp":"2024-03-05 13:13:26"}
+{"level":"http","message":"HTTP request","timestamp":"2024-03-05 13:13:26"}
+{"level":"info","message":"Mongoose connected to the database","timestamp":"2024-03-05 13:13:27"}
+{"level":"info","message":"Mongoose successfully connected to the database","timestamp":"2024-03-05 13:13:27"}
+{"level":"info","message":"This is an informational message","timestamp":"2024-03-05 13:13:33"}
+{"level":"warn","message":"Warning issued","timestamp":"2024-03-05 13:13:33"}
+{"level":"error","message":"Error message","timestamp":"2024-03-05 13:13:33"}
+{"level":"debug","message":"Debugging message","timestamp":"2024-03-05 13:13:33"}
+{"level":"http","message":"HTTP request","timestamp":"2024-03-05 13:13:33"}
+{"level":"info","message":"Mongoose connected to the database","timestamp":"2024-03-05 13:13:34"}
+{"level":"info","message":"Mongoose successfully connected to the database","timestamp":"2024-03-05 13:13:34"}
+{"level":"info","message":"This is an informational message","timestamp":"2024-03-05 13:34:04"}
+{"level":"warn","message":"Warning issued","timestamp":"2024-03-05 13:34:04"}
+{"level":"error","message":"Error message","timestamp":"2024-03-05 13:34:04"}
+{"level":"debug","message":"Debugging message","timestamp":"2024-03-05 13:34:04"}
+{"level":"http","message":"HTTP request","timestamp":"2024-03-05 13:34:04"}
+{"level":"info","message":"Mongoose connected to the database","timestamp":"2024-03-05 13:34:05"}
+{"level":"info","message":"Mongoose successfully connected to the database","timestamp":"2024-03-05 13:34:05"}
+{"level":"http","message":"GET /me 200 - 100ms","timestamp":"2024-03-05 13:34:09"}
+{"level":"http","message":"GET /users 403 - 77ms","timestamp":"2024-03-05 13:34:09"}
+{"level":"http","message":"GET /users 302 - 202ms","timestamp":"2024-03-05 13:34:09"}
+{"level":"http","message":"GET /me 200 - 89ms","timestamp":"2024-03-05 13:34:09"}
+{"level":"http","message":"GET / 200 - 215ms","timestamp":"2024-03-05 13:34:09"}
+{"level":"http","message":"GET /me 200 - 84ms","timestamp":"2024-03-05 13:34:18"}
+{"level":"http","message":"GET /users 403 - 80ms","timestamp":"2024-03-05 13:34:18"}
+{"level":"http","message":"GET /users 302 - 176ms","timestamp":"2024-03-05 13:34:18"}
+{"level":"http","message":"GET /me 200 - 90ms","timestamp":"2024-03-05 13:34:18"}
+{"level":"http","message":"GET / 304 - 134ms","timestamp":"2024-03-05 13:34:18"}

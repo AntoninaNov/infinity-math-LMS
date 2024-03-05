@@ -13,9 +13,14 @@ const io = require('socket.io')(http);
 const morgan = require('morgan');
 const logger = require('./config/logger.config');
 const httpLogger = require('./middlewares/logger');
+const client = require('prom-client');
+const register = new client.Registry();
+client.collectDefaultMetrics({ register });
 
-
-
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
+});
 
 io.on('connection', (socket) => {
     logger.info('A user connected via socket');
