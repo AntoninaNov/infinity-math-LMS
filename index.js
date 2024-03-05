@@ -18,10 +18,14 @@ const httpLogger = require('./middlewares/logger');
 
 
 io.on('connection', (socket) => {
-    console.log('A user connected');
-    // Send a greeting message to the user
+    logger.info('A user connected via socket');
     socket.emit('greeting', 'Welcome! You are successfully logged in.');
+
+    socket.on('disconnect', () => {
+        logger.info('User disconnected');
+    });
 });
+
 
 
 require("./config/db.config");
@@ -54,7 +58,7 @@ app.use(httpLogger);
 app.set('view engine', 'pug');
 app.set('views', join(__dirname, 'views'));
 
-
+// logging demo
 logger.info('This is an informational message');
 logger.warn('Warning issued');
 logger.error('Error message');
@@ -119,9 +123,11 @@ app.post('/login', async (req, res) => {
             // Handle login failure
             res.render('login', { error: 'Invalid credentials. Please try again.' });
         }
+        logger.info(`User attempting to log in: ${req.body.username}`);
     } catch (error) {
         console.error('Login error:', error);
         res.render('login', { error: 'An error occurred. Please try again.' });
+        logger.error(`Login error for user ${req.body.username}: ${error.message}`);
     }
 });
 
@@ -140,9 +146,11 @@ app.post('/register', async (req, res) => {
             // Handle errors, e.g., user already exists
             res.render('register', { error: 'Registration failed. Try again.' });
         }
+        logger.info(`User registration attempt: ${req.body.email}`);
     } catch (error) {
         console.error('Registration error:', error);
         res.render('register', { error: 'An error occurred. Please try again.' });
+        logger.error(`Registration error: ${error.message}`);
     }
 });
 

@@ -1,8 +1,13 @@
 const logger = require('../config/logger.config');
 
 const httpLogger = (req, res, next) => {
-    logger.http(`${req.method} ${req.url}`);
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        logger.http(`${req.method} ${req.url} ${res.statusCode} - ${duration}ms`);
+    });
     next();
 };
+
 
 module.exports = httpLogger;

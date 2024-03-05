@@ -1,25 +1,28 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const logger = require('./logger.config');
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => logger.info("Mongoose successfully connected to the database"))
+    .catch(err => logger.error("Mongoose connection error: " + err));
 
 mongoose.connection.on("connected", () => {
-  console.log("Mongoose connected to mydatabase");
+  logger.info("Mongoose connected to the database");
 });
 
 mongoose.connection.on("error", (err) => {
-  console.log("Mongoose connection error:", err);
+  logger.error("Mongoose connection error: " + err);
 });
 
 mongoose.connection.on("disconnected", () => {
-  console.log("Mongoose disconnected");
+  logger.info("Mongoose disconnected");
 });
 
 process.on("SIGINT", () => {
   mongoose.connection.close(() => {
-    console.log("Mongoose connection closed");
+    logger.info("Mongoose connection closed due to application termination");
     process.exit(0);
   });
 });
